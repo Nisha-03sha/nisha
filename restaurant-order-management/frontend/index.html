@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Restaurant Order Management System | Data Structures Mini Project</title>
+  <meta name="description" content="A real working restaurant order management web application demonstrating practical use of FIFO Queues and Singly Linked Lists powered by an authentic C backend." />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <header class="navbar">
+    <div class="nav-container">
+      <div class="brand-section">
+        <div class="brand-logo">🍛</div>
+        <div class="brand-text">
+          <h1>Spice Kitchen</h1>
+          <div class="tagline">
+            <span>Restaurant Order Management</span>
+            <span class="tagline-badge">C Data Structures</span>
+          </div>
+        </div>
+      </div>
+
+      <nav>
+        <ul class="nav-links">
+          <li>
+            <button class="nav-btn active" data-target="section-order">
+              <span>🍽️ Order Food</span>
+              <span class="nav-counter" id="nav-cart-counter">0</span>
+            </button>
+          </li>
+          <li>
+            <button class="nav-btn" data-target="section-queue">
+              <span>🔔 Queue</span>
+              <span class="nav-counter" id="nav-queue-counter">0</span>
+            </button>
+          </li>
+          <li>
+            <button class="nav-btn" data-target="section-kitchen">
+              <span>📊 Kitchen Board</span>
+            </button>
+          </li>
+          <li>
+            <button class="nav-btn" data-target="section-visualization" style="background: rgba(99, 102, 241, 0.15); border: 1px solid rgba(99, 102, 241, 0.4); color: #a5b4fc;">
+              <span>🧠 DS Visualizer</span>
+            </button>
+          </li>
+          <li>
+            <button class="nav-btn" data-target="section-console">
+              <span>💻 C Console</span>
+            </button>
+          </li>
+          <li>
+            <button class="nav-btn" data-target="section-about">
+              <span>📖 About Project</span>
+            </button>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="c-backend-status-badge">
+        <span class="status-indicator-dot"></span>
+        <span>C Backend: ACTIVE</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="app-container">
+
+    <!-- Hero Banner for Data Structures Mini Project -->
+    <section class="ds-hero-banner">
+      <div class="ds-banner-content">
+        <h2>
+          <span>🧠</span>
+          <span>Data Structures Mini Project: FIFO Queue & Singly Linked List</span>
+        </h2>
+        <p>
+          Demonstrating practical, real-world data structures in C. Customer orders enter a
+          <strong>First-In, First-Out (FIFO) Queue</strong>, while individual dishes in each order
+          are dynamically managed using a <strong>Singly Linked List</strong> with heap memory allocation (<code style="color: #38bdf8;">malloc</code>/<code style="color: #38bdf8;">free</code>).
+        </p>
+        <div class="ds-chips">
+          <span class="ds-chip">Order Queue: FIFO (enqueue, dequeue, peek)</span>
+          <span class="ds-chip">Order Items: Singly Linked List (HEAD → Nodes → NULL)</span>
+          <span class="ds-chip">Backend: Native C (POSIX/WinSock HTTP Server)</span>
+        </div>
+      </div>
+      <div class="ds-banner-actions">
+        <button class="btn btn-secondary btn-sm" onclick="sandboxEnqueueQuickOrder()">
+          + Quick Sample Order
+        </button>
+        <button class="btn btn-primary btn-sm" onclick="switchSection('section-visualization')">
+          Explore Visualizer →
+        </button>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         SECTION 1: CUSTOMER ORDER PAGE
+         ==================================================================== -->
+    <section id="section-order" class="page-section active">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title"><span>🍽️</span> Customer Order Menu</h2>
+          <p class="section-subtitle">Select dishes from the menu to build your order's linked list.</p>
+        </div>
+      </div>
+
+      <div class="order-page-grid">
+        <!-- Menu Left Column -->
+        <div class="menu-column">
+          <!-- Category Pills -->
+          <div class="category-filter-bar" id="category-tabs">
+            <!-- Rendered by JS -->
+          </div>
+
+          <!-- Food Cards Grid -->
+          <div class="menu-grid" id="menu-grid">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
+        <!-- Cart Right Column -->
+        <aside class="cart-panel">
+          <div class="cart-header">
+            <h3 class="cart-title">
+              <span>🛒</span>
+              <span>Your Order</span>
+            </h3>
+            <span class="cart-badge" id="cart-badge-count">0 items</span>
+          </div>
+
+          <!-- Customer details input -->
+          <div class="customer-form">
+            <div class="form-group">
+              <label for="customer-name-input">Customer Name</label>
+              <input type="text" id="customer-name-input" class="form-input" placeholder="e.g. Rahul Sharma" />
+            </div>
+            <div class="form-group">
+              <label for="table-number-input">Table Number (1 - 50)</label>
+              <input type="number" id="table-number-input" class="form-input" min="1" max="50" value="12" />
+            </div>
+          </div>
+
+          <!-- Items in cart (forming the linked list) -->
+          <div style="font-size: 0.75rem; color: var(--text-dim); text-transform: uppercase; font-weight: 700; margin-bottom: 0.5rem;">
+            Order Items (Linked List)
+          </div>
+          <div class="cart-items-list" id="cart-items-container">
+            <!-- Rendered by JS -->
+          </div>
+
+          <!-- Bill Summary -->
+          <div class="cart-summary">
+            <div class="summary-row">
+              <span>Subtotal:</span>
+              <span id="cart-total-amount">₹0.00</span>
+            </div>
+            <div class="summary-row">
+              <span>Estimated Prep Time:</span>
+              <span style="color: #38bdf8;">~12 mins</span>
+            </div>
+            <div class="summary-row total">
+              <span>Total Bill:</span>
+              <span id="cart-total-amount">₹0.00</span>
+            </div>
+          </div>
+
+          <!-- Buttons -->
+          <div style="display: flex; flex-direction: column; gap: 0.65rem;">
+            <button class="btn btn-primary btn-lg" id="place-order-btn">
+              <span>⚡ Place Order (Enqueue)</span>
+            </button>
+            <button class="btn btn-secondary btn-sm" id="clear-cart-btn">
+              Clear Cart
+            </button>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         SECTION 2: ORDER QUEUE DASHBOARD
+         ==================================================================== -->
+    <section id="section-queue" class="page-section">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title"><span>🔔</span> Live Order Queue Dashboard</h2>
+          <p class="section-subtitle">Real-time visualization of the First-In, First-Out (FIFO) kitchen processing queue.</p>
+        </div>
+        <div style="display: flex; gap: 0.5rem;">
+          <button class="btn btn-secondary btn-sm" onclick="refreshQueueAndStats()">
+            🔄 Refresh Queue
+          </button>
+        </div>
+      </div>
+
+      <div class="queue-dashboard-grid">
+        <!-- Now Serving Hero (FRONT of Queue) -->
+        <div>
+          <div style="font-size: 0.85rem; font-weight: 700; color: var(--primary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.65rem;">
+            ▶ Active Kitchen Priority (Queue FRONT)
+          </div>
+          <div id="now-serving-container">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
+        <!-- Up Next Orders (Rest of Queue) -->
+        <div class="up-next-section">
+          <div class="up-next-header">
+            <div>
+              <h3 style="font-size: 1.1rem; font-weight: 700; color: #fff;">Up Next In Line</h3>
+              <p style="font-size: 0.775rem; color: var(--text-muted);">Orders waiting behind in FIFO order</p>
+            </div>
+            <span class="status-badge preparing" id="up-next-count">0 waiting</span>
+          </div>
+
+          <div class="up-next-cards-container" id="up-next-container">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         SECTION 3: KITCHEN / ADMIN DASHBOARD
+         ==================================================================== -->
+    <section id="section-kitchen" class="page-section">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title"><span>📊</span> Kitchen & Admin Dashboard</h2>
+          <p class="section-subtitle">Comprehensive metrics, ticket tracking, and order state management.</p>
+        </div>
+      </div>
+
+      <!-- Top Stats Cards -->
+      <div class="stats-cards-grid">
+        <div class="stat-card">
+          <div class="stat-icon" style="background: rgba(99, 102, 241, 0.15); color: #818cf8;">📦</div>
+          <div class="stat-info">
+            <div class="stat-value" id="stat-total-orders">0</div>
+            <div class="stat-label">Total Orders</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background: var(--warning-bg); color: #fbbf24;">⏳</div>
+          <div class="stat-info">
+            <div class="stat-value" id="stat-pending-orders">0</div>
+            <div class="stat-label">Pending Orders</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background: var(--info-bg); color: #38bdf8;">🍳</div>
+          <div class="stat-info">
+            <div class="stat-value" id="stat-preparing-orders">0</div>
+            <div class="stat-label">Preparing</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background: var(--success-bg); color: #34d399;">✅</div>
+          <div class="stat-info">
+            <div class="stat-value" id="stat-completed-orders">0</div>
+            <div class="stat-label">Completed</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background: rgba(249, 115, 22, 0.15); color: #fb923c;">💰</div>
+          <div class="stat-info">
+            <div class="stat-value" id="stat-total-revenue">₹0.00</div>
+            <div class="stat-label">Total Revenue</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Kitchen Controls & Search Bar -->
+      <div class="kitchen-controls-bar">
+        <div class="search-box-wrapper">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="kitchen-search-input" placeholder="Search orders by ID (#101), Customer Name, or Table Number..." />
+        </div>
+        <div style="display: flex; gap: 0.5rem;">
+          <button class="btn btn-secondary btn-sm" onclick="refreshQueueAndStats()">🔄 Refresh</button>
+          <button class="btn btn-primary btn-sm" onclick="handleProcessNextOrder()">✓ Dequeue Next</button>
+        </div>
+      </div>
+
+      <!-- Kitchen Ticket Kanban Columns -->
+      <div class="kitchen-columns-layout">
+        <div class="ticket-column">
+          <div class="column-header pending">
+            <span class="column-title"><span>⏳</span> Pending Queue</span>
+            <span class="column-count-badge" id="badge-pending">0</span>
+          </div>
+          <div class="tickets-container" id="tickets-pending"></div>
+        </div>
+
+        <div class="ticket-column">
+          <div class="column-header preparing">
+            <span class="column-title"><span>🍳</span> In Preparation</span>
+            <span class="column-count-badge" id="badge-preparing">0</span>
+          </div>
+          <div class="tickets-container" id="tickets-preparing"></div>
+        </div>
+
+        <div class="ticket-column">
+          <div class="column-header ready">
+            <span class="column-title"><span>🛎️</span> Ready to Serve</span>
+            <span class="column-count-badge" id="badge-ready">0</span>
+          </div>
+          <div class="tickets-container" id="tickets-ready"></div>
+        </div>
+
+        <div class="ticket-column">
+          <div class="column-header completed">
+            <span class="column-title"><span>✅</span> Completed Orders</span>
+            <span class="column-count-badge" id="badge-completed">0</span>
+          </div>
+          <div class="tickets-container" id="tickets-completed"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         SECTION 4: DATA STRUCTURE VISUALIZATION (THE CORE SHOWPIECE)
+         ==================================================================== -->
+    <section id="section-visualization" class="page-section">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title"><span>🧠</span> Data Structure Memory & Pointer Visualization</h2>
+          <p class="section-subtitle">
+            Direct visual representation of heap-allocated C nodes, pointer addresses (<code style="color: #a5b4fc;">0x...</code>), and FIFO queue links.
+          </p>
+        </div>
+        <div style="display: flex; gap: 0.5rem;">
+          <button class="btn btn-secondary btn-sm" onclick="fetchVisualization()">🔄 Refresh State</button>
+          <button class="btn btn-primary btn-sm" onclick="sandboxEnqueueQuickOrder()">+ Enqueue Sample</button>
+        </div>
+      </div>
+
+      <div class="ds-container">
+        <!-- 1. FIFO Queue Visualizer Panel -->
+        <div class="ds-panel-card">
+          <div class="ds-panel-header">
+            <div>
+              <h3 class="ds-panel-title"><span>1.</span> FIFO Order Queue Representation</h3>
+              <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.2rem;">
+                Orders are linked sequentially from FRONT (oldest) to REAR (newest). The terminal node's <code style="color: #38bdf8;">next</code> points to <code style="color: #f87171;">NULL</code>.
+              </p>
+            </div>
+            <div class="ds-legend">
+              <div class="legend-item"><span class="legend-dot front"></span> FRONT Pointer</div>
+              <div class="legend-item"><span class="legend-dot rear"></span> REAR Pointer</div>
+              <div class="legend-item"><span class="legend-dot node"></span> Order Node</div>
+              <div class="legend-item"><span class="legend-dot null-ptr"></span> NULL Pointer</div>
+            </div>
+          </div>
+
+          <!-- Pointer Metadata Bar -->
+          <div style="display: flex; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap;">
+            <div class="tagline-badge" id="ds-front-ptr">FRONT: NULL</div>
+            <div class="tagline-badge" id="ds-rear-ptr" style="background: rgba(14, 165, 233, 0.15); border-color: rgba(14, 165, 233, 0.4); color: #38bdf8;">REAR: NULL</div>
+            <div class="tagline-badge" id="ds-queue-count" style="background: rgba(16, 185, 129, 0.15); border-color: rgba(16, 185, 129, 0.4); color: #34d399;">Length: 0</div>
+          </div>
+
+          <!-- Interactive Queue Graph -->
+          <div class="queue-canvas-wrapper" id="ds-queue-flow">
+            <!-- Rendered by JS with real node boxes and pointers -->
+          </div>
+        </div>
+
+        <!-- 2. Singly Linked List Items Inspector Panel -->
+        <div class="ds-panel-card" id="ds-linked-list-inspector">
+          <div class="ds-panel-header">
+            <div>
+              <h3 class="ds-panel-title">
+                <span>2.</span> Singly Linked List Inspector (Ordered Food Items)
+              </h3>
+              <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.2rem;">
+                Inspecting <strong id="ds-selected-order-badge" style="color: #38bdf8;">Order #101</strong>. Each food dish is stored as a distinct <code style="color: #10b981;">Item*</code> node in a singly linked list.
+              </p>
+            </div>
+            <div class="tagline-badge" id="ds-ll-head-ptr" style="background: rgba(16, 185, 129, 0.15); border-color: #10b981; color: #34d399;">
+              HEAD: 0x0
+            </div>
+          </div>
+
+          <div class="linked-list-chain-view" id="ds-ll-nodes-chain">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
+        <!-- 3. Interactive Data Structures Sandbox -->
+        <div class="ds-panel-card">
+          <h3 class="ds-panel-title" style="margin-bottom: 0.5rem;">
+            <span>3.</span> Interactive Data Structure Sandbox
+          </h3>
+          <p style="font-size: 0.825rem; color: var(--text-muted); margin-bottom: 1.25rem;">
+            Directly test algorithmic operations on the C backend data structures and observe memory pointer transitions.
+          </p>
+
+          <div class="ds-sandbox-panel">
+            <div class="sandbox-action-card">
+              <div class="sandbox-action-title"><span>📥</span> enqueue(q, order)</div>
+              <p class="sandbox-desc">
+                Allocates a new <code style="color: #a5b4fc;">Order</code> node and appends it to the REAR of the queue. If queue is empty, FRONT and REAR both point to this new node.
+              </p>
+              <button class="btn btn-primary btn-sm" onclick="sandboxEnqueueQuickOrder()">
+                Execute enqueue()
+              </button>
+            </div>
+
+            <div class="sandbox-action-card">
+              <div class="sandbox-action-title"><span>📤</span> dequeue(q)</div>
+              <p class="sandbox-desc">
+                Removes the Order node at FRONT. Updates <code style="color: #fb923c;">front = front->next</code>. Disconnects node and marks it Completed.
+              </p>
+              <button class="btn btn-success btn-sm" onclick="sandboxDequeueOrder()">
+                Execute dequeue()
+              </button>
+            </div>
+
+            <div class="sandbox-action-card">
+              <div class="sandbox-action-title"><span>👁️</span> peek(q)</div>
+              <p class="sandbox-desc">
+                Inspects the data at FRONT of queue in <code style="color: #38bdf8;">O(1)</code> time without removing or modifying any pointer references.
+              </p>
+              <button class="btn btn-secondary btn-sm" onclick="sandboxPeekFront()">
+                Execute peek()
+              </button>
+            </div>
+
+            <div class="sandbox-action-card">
+              <div class="sandbox-action-title"><span>⚡</span> Time Complexity Analysis</div>
+              <p class="sandbox-desc" style="font-family: var(--font-mono); font-size: 0.75rem; color: #a5b4fc;">
+                • Queue enqueue(): O(1)<br>
+                • Queue dequeue(): O(1)<br>
+                • Queue peek(): O(1)<br>
+                • Linked List Traversal: O(N)
+              </p>
+              <span class="tagline-badge" style="color: #34d399;">Optimal Theoretical Limits</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         SECTION 5: C BACKEND CONSOLE & LIVE LOGS
+         ==================================================================== -->
+    <section id="section-console" class="page-section">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title"><span>💻</span> C Backend Server Terminal & Memory Logs</h2>
+          <p class="section-subtitle">Real-time standard output from C backend socket operations, node allocations, and pointer events.</p>
+        </div>
+        <div style="display: flex; gap: 0.5rem;">
+          <button class="btn btn-secondary btn-sm" id="refresh-logs-btn">🔄 Refresh Logs</button>
+        </div>
+      </div>
+
+      <div class="console-container">
+        <div class="console-header">
+          <div class="console-title-area">
+            <span class="console-dot red"></span>
+            <span class="console-dot yellow"></span>
+            <span class="console-dot green"></span>
+            <span style="margin-left: 0.5rem;">gcc-backend:~/restaurant-order-management/backend$ ./server 8080</span>
+          </div>
+          <span style="font-size: 0.72rem; color: #34d399; font-family: var(--font-mono);">HTTP/1.1 REST DAEMON</span>
+        </div>
+        <div class="console-body" id="c-console-body">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+
+      <!-- Quick API Curl Cheatsheet for College Demo -->
+      <div style="margin-top: 1.5rem; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1.25rem;">
+        <h4 style="font-size: 0.95rem; font-weight: 700; color: #fff; margin-bottom: 0.5rem;">
+          Sample API Requests for Demonstration (curl / Postman)
+        </h4>
+        <div class="code-snippet-box">
+# 1. Fetch current Menu<br>
+curl -X GET http://localhost:8080/api/menu<br><br>
+# 2. Enqueue a new customer order into the C Queue<br>
+curl -X POST http://localhost:8080/api/orders -H "Content-Type: application/json" -d '{"customerName":"Rohit","tableNumber":5,"items":[{"itemId":1,"quantity":2},{"itemId":9,"quantity":2}]}'<br><br>
+# 3. Dequeue the front order (FIFO)<br>
+curl -X POST http://localhost:8080/api/orders/process-next<br><br>
+# 4. Inspect C memory pointers for Queue & Linked Lists<br>
+curl -X GET http://localhost:8080/api/queue/visualize
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         SECTION 6: ABOUT PROJECT & DOCUMENTATION
+         ==================================================================== -->
+    <section id="section-about" class="page-section">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title"><span>📖</span> Project Documentation & Academic Details</h2>
+          <p class="section-subtitle">College Mini-Project Demonstration Guide for Data Structures and Algorithms.</p>
+        </div>
+      </div>
+
+      <div class="about-grid">
+        <div class="about-card">
+          <h3><span>🎯</span> Project Objective</h3>
+          <p>
+            The primary goal of this mini project is to bridge theoretical data structures
+            (FIFO Queues and Singly Linked Lists) with a practical, full-stack application.
+          </p>
+          <p>
+            Rather than using static in-memory JavaScript mockups, the business logic and
+            pointer manipulation reside entirely in a compiled <strong>C Backend</strong>.
+          </p>
+        </div>
+
+        <div class="about-card">
+          <h3><span>📌</span> 1. Queue Implementation (FIFO)</h3>
+          <p>
+            Orders are placed into a FIFO queue. The oldest pending order stays at the
+            <strong>FRONT</strong> and is served first.
+          </p>
+          <p>
+            New incoming orders are attached to the <strong>REAR</strong> with <code style="color: #38bdf8;">O(1)</code> time complexity.
+            When food is ready, <code style="color: #38bdf8;">dequeue()</code> serves the front order and shifts the pointer.
+          </p>
+          <div class="code-snippet-box">
+typedef struct {<br>
+&nbsp;&nbsp;Order *front;<br>
+&nbsp;&nbsp;Order *rear;<br>
+&nbsp;&nbsp;int count;<br>
+} OrderQueue;
+          </div>
+        </div>
+
+        <div class="about-card">
+          <h3><span>🔗</span> 2. Linked List Implementation</h3>
+          <p>
+            Each Order structure maintains a pointer to the <strong>HEAD</strong> of a
+            dynamically allocated singly linked list of ordered food items.
+          </p>
+          <p>
+            This ensures that customers can order any number of unique items without
+            memory wastage or fixed array constraints.
+          </p>
+          <div class="code-snippet-box">
+typedef struct Item {<br>
+&nbsp;&nbsp;int itemId;<br>
+&nbsp;&nbsp;char name[100];<br>
+&nbsp;&nbsp;float price;<br>
+&nbsp;&nbsp;int quantity;<br>
+&nbsp;&nbsp;struct Item *next;<br>
+} Item;
+          </div>
+        </div>
+
+        <div class="about-card">
+          <h3><span>⚡</span> Frontend to Backend Flow</h3>
+          <p>
+            1. User adds food items and clicks <em>Place Order</em>.<br>
+            2. Browser sends HTTP POST to <code style="color: #38bdf8;">/api/orders</code>.<br>
+            3. C Backend runs <code style="color: #10b981;">malloc()</code> to create the Order and Item nodes.<br>
+            4. C backend invokes <code style="color: #10b981;">enqueue(&queue, newOrder)</code>.<br>
+            5. UI dynamically updates Queue and DS Visualizer with real memory pointer values!
+          </p>
+        </div>
+
+        <div class="about-card">
+          <h3><span>💻</span> Running on Windows (GCC / MSYS2)</h3>
+          <p>
+            The project code is fully cross-platform (using WinSock2 on Windows and POSIX sockets on Linux):
+          </p>
+          <div class="code-snippet-box">
+# In MSYS2 MinGW-64 terminal:<br>
+cd restaurant-order-management/backend<br>
+gcc -Wall -O2 main.c server.c queue.c linkedlist.c order.c -o server.exe -lws2_32<br>
+./server.exe 8080<br>
+# Open frontend/index.html in Chrome/Edge!
+          </div>
+        </div>
+
+        <div class="about-card">
+          <h3><span>🐧</span> Running on Linux / MacOS</h3>
+          <p>
+            Using standard GCC and Make:
+          </p>
+          <div class="code-snippet-box">
+cd restaurant-order-management/backend<br>
+make<br>
+./server 8080<br>
+# Open http://localhost:8080
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Global Modal Dialog (Details, Bill Receipt) -->
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal-content-box">
+      <div class="modal-header">
+        <h3 style="color: #fff; font-size: 1.15rem; font-weight: 700;">Order Information</h3>
+        <button class="modal-close-btn" id="modal-close-btn">✕</button>
+      </div>
+      <div id="modal-body">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Stack -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- Footer -->
+  <footer class="app-footer">
+    <p>
+      Restaurant Order Management System • Data Structures Mini Project
+      <br>
+      <span style="color: #64748b;">Powered by C Backend with FIFO Queue and Singly Linked List Data Structures</span>
+    </p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

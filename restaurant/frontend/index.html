@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Basil & Ember | Good food. Warm moments.</title>
+  <meta name="description" content="Fresh ingredients, bold flavours, and dishes made with care. Order online for table service or takeaway from Basil & Ember." />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Site Navigation Header -->
+  <header class="site-header">
+    <div class="header-container">
+      <a href="#home" class="brand-link" data-route="home">
+        <div class="brand-mark">🌿</div>
+        <div>
+          <div class="brand-title">BASIL &amp; EMBER</div>
+          <div class="brand-tagline">Good food. Warm moments.</div>
+        </div>
+      </a>
+
+      <!-- Main Navigation Links -->
+      <nav class="main-nav">
+        <a href="#home" class="nav-link-btn active" data-route="home">Home</a>
+        <a href="#menu" class="nav-link-btn" data-route="menu">Menu</a>
+        <a href="#story" class="nav-link-btn" data-route="home" onclick="setTimeout(() => document.getElementById('story-section')?.scrollIntoView({behavior: 'smooth'}), 100)">Our Story</a>
+        <a href="#tracking" class="nav-link-btn" data-route="tracking">My Order</a>
+        <a href="#admin" class="nav-link-btn" data-route="admin" style="opacity: 0.7; font-size: 0.8rem;">Staff Portal</a>
+      </nav>
+
+      <!-- Cart Trigger & CTA -->
+      <div class="header-actions">
+        <button class="cart-toggle-btn open-cart-trigger" aria-label="View Order">
+          <span>🛒</span>
+          <span>Order</span>
+          <span class="cart-count-badge" id="nav-cart-badge">0</span>
+        </button>
+        <button class="btn btn-primary btn-sm" onclick="navigateTo('menu')">
+          Order Online
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ====================================================================
+       1. HOME PAGE VIEW
+       ==================================================================== -->
+  <main id="view-home" class="view-section active">
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="hero-overlay"></div>
+      <div class="container hero-content">
+        <div class="hero-eyebrow">
+          <span>✨</span>
+          <span>Artisanal Kitchen &amp; Hearth</span>
+        </div>
+        <h1 class="hero-title">
+          Good food.<br><em>Warm moments.</em>
+        </h1>
+        <p class="hero-description">
+          Fresh ingredients, bold flavours, and dishes made with care. Welcome to Basil &amp; Ember, where authentic recipes meet the cozy glow of our embers.
+        </p>
+
+        <div class="hero-cta-group">
+          <button class="btn btn-primary btn-lg" onclick="navigateTo('menu')">
+            Order Online Now &rarr;
+          </button>
+          <button class="btn btn-secondary btn-lg" onclick="navigateTo('menu')">
+            Explore Menu
+          </button>
+        </div>
+
+        <div class="hero-trust-bar">
+          <div class="trust-item">
+            <span class="trust-icon">🔥</span>
+            <div>
+              <h4>Fresh to Order</h4>
+              <p>Handcrafted in small batches</p>
+            </div>
+          </div>
+          <div class="trust-item">
+            <span class="trust-icon">⏱️</span>
+            <div>
+              <h4>Fast Table Service</h4>
+              <p>20–25 mins kitchen dispatch</p>
+            </div>
+          </div>
+          <div class="trust-item">
+            <span class="trust-icon">⭐</span>
+            <div>
+              <h4>4.9 / 5 Rating</h4>
+              <p>Over 1,200 happy diners</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Chef's Specials -->
+    <section style="padding: 5rem 0 3rem; background: var(--bg-dark);">
+      <div class="container">
+        <div class="section-intro-header">
+          <div class="section-tag">Chef's Highlights</div>
+          <h2 class="section-heading">Signature Hearth Creations</h2>
+          <p class="section-subtext">Our most celebrated recipes, slow-simmered and spiced with heirloom culinary secrets.</p>
+        </div>
+
+        <div class="menu-dishes-grid" id="featured-specials-grid">
+          <!-- Populated by JS -->
+        </div>
+
+        <div style="text-align: center; margin-top: 1rem;">
+          <button class="btn btn-outline-gold btn-lg" onclick="navigateTo('menu')">
+            View Complete Menu (19 Dishes) &rarr;
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Our Story Section -->
+    <section id="story-section" style="background: var(--bg-surface); padding: 5rem 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+      <div class="container">
+        <div class="about-story-grid">
+          <div class="about-story-image">
+            <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1000&q=80" alt="Basil & Ember Kitchen" loading="lazy" />
+          </div>
+          <div>
+            <div class="section-tag">Our Culinary Philosophy</div>
+            <h2 class="section-heading" style="margin-bottom: 1.25rem;">Crafted with Ember, Seasoned with Basil</h2>
+            <p style="color: var(--text-body); font-size: 1.05rem; line-height: 1.7; margin-bottom: 1.25rem;">
+              At Basil &amp; Ember, cooking is an act of warmth. Founded on the belief that food tastes best when prepared without shortcuts, our tandoors fire with natural hardwood and our gravies simmer gently for hours.
+            </p>
+            <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.7; margin-bottom: 2rem;">
+              Whether you are dining in at Table 12 with family or grabbing an express meal between errands, every dish is assembled fresh to order by our kitchen artisans.
+            </p>
+            <div style="display: flex; gap: 2rem; border-top: 1px solid var(--border-light); padding-top: 1.5rem;">
+              <div>
+                <h4 style="font-size: 1.5rem; color: #fff; font-family: var(--font-serif);">100%</h4>
+                <p style="font-size: 0.8rem; color: var(--text-muted);">Fresh Farm Produce</p>
+              </div>
+              <div>
+                <h4 style="font-size: 1.5rem; color: #fff; font-family: var(--font-serif);">0</h4>
+                <p style="font-size: 0.8rem; color: var(--text-muted);">Artificial Additives</p>
+              </div>
+              <div>
+                <h4 style="font-size: 1.5rem; color: #fff; font-family: var(--font-serif);">Daily</h4>
+                <p style="font-size: 0.8rem; color: var(--text-muted);">Handmade Spice Blends</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Guest Reviews -->
+    <section style="padding: 5rem 0 3rem; background: var(--bg-dark);">
+      <div class="container">
+        <div class="section-intro-header">
+          <div class="section-tag">Guest Experiences</div>
+          <h2 class="section-heading">Loved by Food Lovers</h2>
+          <p class="section-subtext">Hear what diners say about their experiences at Basil &amp; Ember.</p>
+        </div>
+
+        <div class="reviews-grid">
+          <div class="review-card">
+            <div>
+              <div class="review-stars">★★★★★</div>
+              <p class="review-text">
+                "The Hyderabadi Chicken Biriyani is extraordinary. The grain separation, aromatic saffron, and tender chicken make it the best biriyani in the city."
+              </p>
+            </div>
+            <div class="review-author">— Nisha Kapoor (Food Blogger)</div>
+          </div>
+
+          <div class="review-card">
+            <div>
+              <div class="review-stars">★★★★★</div>
+              <p class="review-text">
+                "We ordered right from our phone at Table 7. The live tracking was pinpoint accurate and our Chicken 65 arrived piping hot in 18 minutes!"
+              </p>
+            </div>
+            <div class="review-author">— Rahul Verma (Local Resident)</div>
+          </div>
+
+          <div class="review-card">
+            <div>
+              <div class="review-stars">★★★★★</div>
+              <p class="review-text">
+                "The Dal Makhani and Garlic Naan are unmatched. Incredible attention to detail, warm hospitality, and pure culinary soul."
+              </p>
+            </div>
+            <div class="review-author">— Ananya Roy (Culinary Critic)</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ====================================================================
+       2. MENU PAGE VIEW
+       ==================================================================== -->
+  <section id="view-menu" class="view-section">
+    <div class="menu-page-header">
+      <div class="container">
+        <div style="text-align: center; max-width: 600px; margin: 0 auto;">
+          <div class="section-tag">Culinary Catalog</div>
+          <h2 class="section-heading">Our Handcrafted Menu</h2>
+          <p class="section-subtext">Select dishes to curate your meal. Custom spice levels and dietary requests honored.</p>
+        </div>
+
+        <!-- Search and Dietary Toggles -->
+        <div class="menu-search-filter-wrap">
+          <div class="search-input-box">
+            <span class="icon">🔍</span>
+            <input type="text" placeholder="Search dishes by name (e.g. Biriyani, Paneer, Naan)..." oninput="handleMenuSearch(this.value)" />
+          </div>
+
+          <div class="filter-toggles">
+            <button class="diet-toggle-btn" id="veg-filter-btn" onclick="toggleVegFilter()">
+              <span class="diet-indicator veg"></span>
+              <span>Pure Veg Only</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <!-- Category Nav Bar -->
+      <nav class="category-nav-bar" id="category-nav-bar">
+        <!-- Rendered by JS -->
+      </nav>
+
+      <!-- Dishes Grid -->
+      <div class="menu-dishes-grid" id="menu-dishes-grid">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================================
+       3. CHECKOUT VIEW
+       ==================================================================== -->
+  <section id="view-checkout" class="view-section">
+    <div class="container" style="padding-top: 3rem;">
+      <div style="max-width: 600px; margin-bottom: 2rem;">
+        <div class="section-tag">Final Step</div>
+        <h2 class="section-heading">Review &amp; Place Your Order</h2>
+        <p class="section-subtext">Provide your table or contact details to dispatch your order directly to our kitchen.</p>
+      </div>
+
+      <div class="checkout-grid">
+        <!-- Left: Form -->
+        <div class="checkout-card">
+          <h3 class="form-title"><span>📝</span> Customer &amp; Table Details</h3>
+
+          <form id="checkout-form">
+            <!-- Dining Type -->
+            <label style="font-size: 0.825rem; font-weight: 600; color: var(--text-body); margin-bottom: 0.5rem; display: block;">
+              Dining Preference
+            </label>
+            <div class="dining-type-selector">
+              <div class="dining-pill active" data-type="dine-in">
+                <div style="font-size: 1.25rem; margin-bottom: 0.25rem;">🍽️</div>
+                <strong>Dine-In Table</strong>
+                <div style="font-size: 0.75rem; color: var(--text-muted);">Direct service to your table</div>
+              </div>
+              <div class="dining-pill" data-type="takeaway">
+                <div style="font-size: 1.25rem; margin-bottom: 0.25rem;">🛍️</div>
+                <strong>Express Takeaway</strong>
+                <div style="font-size: 0.75rem; color: var(--text-muted);">Packaged fresh for pickup</div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="checkout-name">Your Full Name *</label>
+              <input type="text" id="checkout-name" class="form-control" placeholder="e.g. Nisha Kapoor" required />
+            </div>
+
+            <div class="form-group">
+              <label for="checkout-phone">Phone Number (10 digits) *</label>
+              <input type="tel" id="checkout-phone" class="form-control" placeholder="e.g. 9876543210" required />
+            </div>
+
+            <div class="form-group" id="checkout-table-group">
+              <label for="checkout-table">Table Number (1 to 50) *</label>
+              <input type="number" id="checkout-table" class="form-control" min="1" max="50" value="12" required />
+            </div>
+
+            <div class="form-group">
+              <label for="checkout-notes">Kitchen Instructions (Optional)</label>
+              <input type="text" id="checkout-notes" class="form-control" placeholder="e.g. Extra spicy, serve dessert after main course" />
+            </div>
+
+            <div style="margin-top: 2rem;">
+              <button type="submit" class="btn btn-primary btn-lg" id="checkout-submit-btn" style="width: 100%;">
+                Place Order Now
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Right: Summary -->
+        <div class="checkout-card" style="height: fit-content;">
+          <h3 class="form-title"><span>🧾</span> Order Summary</h3>
+
+          <div class="summary-items-list" id="checkout-summary-items">
+            <!-- Rendered by JS -->
+          </div>
+
+          <div style="border-top: 1px solid var(--border); padding-top: 1rem; display: flex; flex-direction: column; gap: 0.45rem; font-size: 0.9rem;">
+            <div style="display: flex; justify-content: space-between; color: var(--text-muted);">
+              <span>Subtotal:</span>
+              <span id="checkout-subtotal">₹0.00</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; color: var(--text-muted);">
+              <span>Taxes (5% GST):</span>
+              <span id="checkout-tax">₹0.00</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; font-size: 1.25rem; font-weight: 800; color: #fff; padding-top: 0.75rem; border-top: 1px dashed var(--border-light); margin-top: 0.25rem;">
+              <span>Total Payable:</span>
+              <span id="checkout-total" style="color: var(--primary); font-family: var(--font-serif);">₹0.00</span>
+            </div>
+          </div>
+
+          <div style="background: rgba(224, 108, 58, 0.08); border-radius: var(--radius-sm); padding: 0.85rem; margin-top: 1.5rem; font-size: 0.785rem; color: var(--text-muted); line-height: 1.5;">
+            🔒 <strong>Fresh Kitchen Guarantee:</strong> Your dishes will be cooked immediately in our wood-fired hearth and delivered hot to your table.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================================
+       4. ORDER TRACKING VIEW
+       ==================================================================== -->
+  <section id="view-tracking" class="view-section">
+    <div class="container">
+      <div class="tracking-wrapper">
+        <div class="tracking-card">
+          <div class="tracking-header-badge">
+            <span>●</span>
+            <span>Live Kitchen Tracking</span>
+          </div>
+
+          <div class="tracking-order-number" id="tracking-order-num">#1042</div>
+          <h2 style="font-family: var(--font-serif); font-size: 1.4rem; color: #fff; margin-bottom: 0.35rem;" id="tracking-greeting">
+            Thank you, Nisha!
+          </h2>
+          <p style="color: var(--text-muted); font-size: 0.95rem;" id="tracking-status-note">
+            Your order is being prepared with fresh ingredients.
+          </p>
+
+          <div class="tracking-prep-time">
+            <span>⏱️</span>
+            <span>Estimated preparation time: <strong>20–25 minutes</strong></span>
+          </div>
+
+          <!-- Live Timeline Stepper -->
+          <div class="tracking-timeline">
+            <!-- Step 1: Confirmed -->
+            <div class="timeline-step completed" id="step-confirmed">
+              <div class="step-marker">✓</div>
+              <div class="step-details">
+                <h4>Order Confirmed</h4>
+                <p>Received and logged into kitchen system</p>
+              </div>
+            </div>
+
+            <!-- Step 2: Preparing -->
+            <div class="timeline-step active" id="step-preparing">
+              <div class="step-marker">🍳</div>
+              <div class="step-details">
+                <h4>Kitchen Preparing</h4>
+                <p>Chefs are slow-cooking and plating your dishes</p>
+              </div>
+            </div>
+
+            <!-- Step 3: Ready -->
+            <div class="timeline-step" id="step-ready">
+              <div class="step-marker">🛎️</div>
+              <div class="step-details">
+                <h4>Ready for Service</h4>
+                <p>Dishes are ready and on their way to your table</p>
+              </div>
+            </div>
+
+            <!-- Step 4: Completed -->
+            <div class="timeline-step" id="step-completed">
+              <div class="step-marker">✨</div>
+              <div class="step-details">
+                <h4>Served &amp; Completed</h4>
+                <p>Enjoy your meal at Basil &amp; Ember!</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Order Summary Details -->
+          <div class="tracking-order-summary-box" id="tracking-summary-box">
+            <!-- Rendered by JS -->
+          </div>
+
+          <div style="display: flex; gap: 1rem; margin-top: 2rem; flex-wrap: wrap;">
+            <button class="btn btn-secondary btn-sm" onclick="navigateTo('menu')">
+              + Order Additional Dishes
+            </button>
+            <button class="btn btn-secondary btn-sm" onclick="window.print()">
+              🖨️ Print Receipt
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================================
+       5. RESTAURANT ADMIN & KITCHEN DASHBOARD
+       ==================================================================== -->
+  <section id="view-admin" class="view-section">
+    <div class="container" style="padding-top: 3rem;">
+      <div class="admin-header-bar">
+        <div>
+          <div class="section-tag">Staff Portal</div>
+          <h2 class="section-heading">Kitchen Order Dashboard</h2>
+          <p class="section-subtext">Live order sequence and kitchen ticket operations.</p>
+        </div>
+
+        <div style="display: flex; gap: 0.75rem;">
+          <button class="btn btn-primary btn-sm" id="admin-process-next-btn">
+            ✓ Serve &amp; Complete Next Order
+          </button>
+          <button class="btn btn-secondary btn-sm" onclick="fetchKitchenData()">
+            🔄 Refresh
+          </button>
+        </div>
+      </div>
+
+      <!-- Real Kitchen Metrics -->
+      <div class="admin-stats-grid">
+        <div class="admin-stat-card">
+          <div class="admin-stat-label">Today's Orders</div>
+          <div class="admin-stat-value" id="admin-stat-total">24</div>
+        </div>
+        <div class="admin-stat-card">
+          <div class="admin-stat-label">In Preparation</div>
+          <div class="admin-stat-value" style="color: var(--status-preparing);" id="admin-stat-preparing">6</div>
+        </div>
+        <div class="admin-stat-card">
+          <div class="admin-stat-label">Ready to Serve</div>
+          <div class="admin-stat-value" style="color: var(--status-ready);" id="admin-stat-ready">4</div>
+        </div>
+        <div class="admin-stat-card">
+          <div class="admin-stat-label">Completed</div>
+          <div class="admin-stat-value" style="color: var(--status-completed);" id="admin-stat-completed">14</div>
+        </div>
+        <div class="admin-stat-card">
+          <div class="admin-stat-label">Today's Revenue</div>
+          <div class="admin-stat-value" style="color: var(--gold);" id="admin-stat-revenue">₹8,420</div>
+        </div>
+      </div>
+
+      <!-- Search & Filters -->
+      <div style="margin-bottom: 1.5rem; max-width: 420px;">
+        <input type="text" id="kitchen-search-input" class="form-control" placeholder="Search orders by Order #, Customer, or Table..." />
+      </div>
+
+      <!-- Active Kitchen Order Cards (FIFO sequence) -->
+      <div class="kitchen-orders-container" id="kitchen-orders-grid">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================================
+       SLIDE-OUT CART DRAWER
+       ==================================================================== -->
+  <div class="cart-backdrop" id="cart-backdrop">
+    <aside class="cart-drawer">
+      <div class="cart-drawer-header">
+        <h3 class="cart-drawer-title">
+          <span>🛒</span>
+          <span>Your Order</span>
+        </h3>
+        <button class="cart-close-btn" id="cart-close-btn" aria-label="Close cart">✕</button>
+      </div>
+
+      <div class="cart-drawer-body" id="cart-drawer-items">
+        <!-- Populated by JS -->
+      </div>
+
+      <div class="cart-drawer-footer">
+        <div class="cart-price-breakdown">
+          <div class="price-row">
+            <span>Subtotal</span>
+            <span id="cart-drawer-subtotal">₹0.00</span>
+          </div>
+          <div class="price-row">
+            <span>Taxes (5% GST)</span>
+            <span id="cart-drawer-tax">₹0.00</span>
+          </div>
+          <div class="price-row total">
+            <span>Total</span>
+            <span id="cart-drawer-total">₹0.00</span>
+          </div>
+        </div>
+
+        <button class="btn btn-primary btn-lg" id="cart-drawer-checkout-btn" style="width: 100%;" onclick="closeCartDrawer(); navigateTo('checkout');">
+          Proceed to Checkout &rarr;
+        </button>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div class="brand-title" style="margin-bottom: 0.35rem;">BASIL &amp; EMBER</div>
+          <div class="brand-tagline" style="margin-bottom: 1rem;">Good food. Warm moments.</div>
+          <p style="color: var(--text-muted); font-size: 0.875rem; line-height: 1.6; max-width: 320px;">
+            Fresh ingredients, bold flavours, and dishes made with care. Authentic dining and online ordering for your table.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Navigation</h4>
+          <ul class="footer-links">
+            <li><a href="#home" onclick="navigateTo('home')">Home</a></li>
+            <li><a href="#menu" onclick="navigateTo('menu')">Food Menu</a></li>
+            <li><a href="#tracking" onclick="navigateTo('tracking')">Track Order</a></li>
+            <li><a href="#admin" onclick="navigateTo('admin')">Kitchen Staff Portal</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Hours</h4>
+          <ul class="footer-links" style="color: var(--text-muted); font-size: 0.85rem;">
+            <li>Mon – Fri: 11:30 AM – 11:00 PM</li>
+            <li>Sat – Sun: 11:00 AM – 11:30 PM</li>
+            <li style="color: var(--gold); margin-top: 0.5rem;">Kitchen Open Daily</li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Find &amp; Contact Us</h4>
+          <p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.6; margin-bottom: 0.75rem;">
+            42 Culinary Avenue, Embers Square<br>
+            Bangalore / New Delhi • India
+          </p>
+          <p style="color: #fff; font-weight: 600; font-size: 0.9rem;">
+            📞 +91 98765 43210
+          </p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 Basil &amp; Ember Restaurant. All rights reserved.</div>
+        <div style="display: flex; gap: 1.5rem;">
+          <a href="#menu" onclick="navigateTo('menu')" style="color: var(--text-dim); text-decoration: none;">Menu</a>
+          <a href="#tracking" onclick="navigateTo('tracking')" style="color: var(--text-dim); text-decoration: none;">Tracking</a>
+          <a href="#admin" onclick="navigateTo('admin')" style="color: var(--text-dim); text-decoration: none;">Staff Dashboard</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

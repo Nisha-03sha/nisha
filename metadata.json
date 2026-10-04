@@ -1,0 +1,6 @@
+{
+  "name": "Basil & Ember",
+  "description": "Good food. Warm moments. Fresh ingredients, bold flavours, and handcrafted dishes made with care.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
